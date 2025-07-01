@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HERE AND NOW AI - Real-Time Voice Translator</title>
+  <link rel="icon" href="https://raw.githubusercontent.com/hereandnowai/images/refs/heads/main/logos/favicon-logo-with-name.png" type="image/png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+<style>
+  :root, html[data-theme='light'] {
+    /* Base Colors */
+    --app-background: #F3F4F6; /* Light Gray */
+    --app-text-primary: #1F2937; /* Dark Gray */
+    --app-text-secondary: #4B5563; /* Medium Gray */
+    --app-text-subtle: #6B7280; /* Gray */
+
+    /* Card / Container Backgrounds */
+    --card-background: #FFFFFF;
+    --card-text-primary: #1F2937;
+    --card-text-secondary: #4B5563;
+    --card-border-color: #E5E7EB; /* Light border for cards */
+    --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+    /* Input Fields */
+    --input-background: #FFFFFF;
+    --input-text: #000000; /* Black */
+    --input-border-color: #D1D5DB; /* Standard light border */
+    --input-focus-border-color: var(--brand-primary); 
+    --input-focus-ring-color: var(--brand-primary-lighter); 
+    --input-placeholder-text: #9CA3AF;
+    --option-item-text-color: #000000; /* Black for dropdown options */
+
+    /* Buttons */
+    --button-primary-background: var(--brand-primary);
+    --button-primary-text: var(--brand-text-on-primary);
+    --button-primary-hover-background: var(--brand-primary-darker);
+    --button-secondary-background: #E5E7EB; /* Light Gray */
+    --button-secondary-text: #374151; /* Dark Gray */
+    --button-secondary-hover-background: #D1D5DB; 
+    --button-disabled-opacity: 0.6;
+
+    /* Brand Colors (Light Theme Adaptation) */
+    --brand-primary: #FFDF00; 
+    --brand-primary-darker: #E6C900;
+    --brand-primary-lighter: #FFE94D;
+    --brand-text-on-primary: #1A1A1A; 
+
+    --brand-secondary: #004040; /* Retain dark teal for some accents if needed */
+    --brand-secondary-lighter: #005050; 
+    --brand-text-on-secondary: #E0E0E0;
+
+    /* States & Alerts */
+    --error-background: #FEE2E2; /* Light Red */
+    --error-text: #B91C1C; /* Dark Red */
+    --error-border-color: #FCA5A5; /* Red */
+    --warning-text: #D97706; /* Amber */
+    --success-background: var(--brand-primary);
+    --success-text: var(--brand-text-on-primary);
+
+    /* Links */
+    --link-text: var(--brand-primary-darker);
+    --link-hover-text: var(--brand-primary);
+
+    /* Misc */
+    --icon-color: var(--app-text-secondary);
+    --icon-hover-color: var(--app-text-primary);
+    --focus-ring-color: var(--brand-primary-lighter); /* General focus ring */
+  }
+
+  html[data-theme='dark'] {
+    /* Base Colors */
+    --app-background: #002B2B; /* Darker than secondary for true background */
+    --app-text-primary: #E0E0E0; /* Light gray */
+    --app-text-secondary: #A0A0A0; /* Medium light gray */
+    --app-text-subtle: #707070; /* Darker gray */
+
+    /* Card / Container Backgrounds */
+    --card-background: #004040; /* Original brand secondary as card */
+    --card-text-primary: #F0F0F0;
+    --card-text-secondary: #B0B0B0;
+    --card-border-color: #005050; /* Lighter teal border */
+    --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+
+
+    /* Input Fields */
+    --input-background: rgba(0,0,0,0.2);
+    --input-text: #E0E0E0;
+    --input-border-color: rgba(255,255,255,0.2);
+    --input-focus-border-color: var(--brand-primary);
+    --input-focus-ring-color: var(--brand-primary-lighter);
+    --input-placeholder-text: #A0A0A0;
+    --option-item-text-color: #000000; /* Black for dropdown options for max contrast */
+
+    /* Buttons */
+    --button-primary-background: var(--brand-primary);
+    --button-primary-text: var(--brand-text-on-primary);
+    --button-primary-hover-background: var(--brand-primary-darker);
+    --button-secondary-background: rgba(255,255,255,0.1);
+    --button-secondary-text: #E0E0E0;
+    --button-secondary-hover-background: rgba(255,255,255,0.2);
+
+    /* Brand Colors (Dark Theme Adaptation) - Primary is often kept bright */
+    --brand-primary: #FFDF00; 
+    --brand-primary-darker: #E6C900;
+    --brand-primary-lighter: #FFE94D;
+    --brand-text-on-primary: #1A1A1A;
+
+    --brand-secondary: #004040; 
+    --brand-secondary-lighter: #005050;
+    --brand-text-on-secondary: #E0E0E0; 
+
+    /* States & Alerts */
+    --error-background: rgba(244, 67, 54, 0.15); /* Darker Red bg */
+    --error-text: #F44336; /* Bright Red text */
+    --error-border-color: #F44336;
+    --warning-text: #FF9800; /* Amber for warning */
+    --success-background: var(--brand-primary);
+    --success-text: var(--brand-text-on-primary);
+
+    /* Links */
+    --link-text: var(--brand-primary-lighter);
+    --link-hover-text: var(--brand-primary);
+    
+    /* Misc */
+    --icon-color: var(--app-text-secondary);
+    --icon-hover-color: var(--app-text-primary);
+    --focus-ring-color: var(--brand-primary-lighter);
+  }
+
+  body {
+    background-color: var(--app-background);
+    color: var(--app-text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  ::selection {
+    background-color: var(--brand-primary);
+    color: var(--brand-text-on-primary);
+  }
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.6.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="flex items-center justify-center min-h-screen">
+  <div id="root" class="w-full max-w-2xl p-4"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
